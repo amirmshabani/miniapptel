@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#229ED9" />
+  <title>Common Ground</title>
+
+<style>
+    :root {
+      --blue: #229ed9;
+      --blue-dark: #168ac2;
+      --bg: #f4f7f9;
+      --surface: #fff;
+      --text: #18212b;
+      --muted: #75818d;
+      --border: #e8edf1;
+      --chip: #edf7fc;
+      --shadow: 0 8px 24px rgba(28, 51, 71, .06);
+    }
+
+* { box-sizing: border-box; }
+
+body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+.app {
+      width: min(100%, 520px);
+      min-height: 100vh;
+      margin: auto;
+      padding-bottom: 90px;
+      background: var(--bg);
+    }
+
+.topbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: rgba(244,247,249,.94);
+      backdrop-filter: blur(14px);
+    }
+
+.brand { display: flex; align-items: center; gap: 10px; }
+    .brand-mark {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border-radius: 13px;
+      background: var(--blue);
+      color: white;
+    }
+    .brand-mark svg { width: 23px; height: 23px; fill: currentColor; }
+    .brand-name { font-size: 17px; font-weight: 750; letter-spacing: -.4px; }
+    .demo-label { color: var(--muted); font-size: 11px; }
+
+main { padding: 8px 16px 24px; }
+    .intro { padding: 10px 4px 18px; }
+    .intro h1 { margin: 0 0 6px; font-size: 26px; letter-spacing: -.8px; }
+    .intro p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+.search-wrap { position: relative; margin-bottom: 14px; }
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      left: 14px;
+      transform: translateY(-50%);
+      color: var(--muted);
+    }
+    .search, .field {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      outline: none;
+      background: white;
+      color: var(--text);
+    }
+    .search { padding-left: 40px; }
+    .search:focus, .field:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(34,158,217,.12);
+    }
+
+.filters {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 1px 0 15px;
+      scrollbar-width: none;
+    }
+    .filters::-webkit-scrollbar { display: none; }
+    .filter {
+      flex: 0 0 auto;
+      padding: 8px 13px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: white;
+      color: #5c6975;
+      font-size: 13px;
+    }
+    .filter.active { border-color: var(--blue); background: var(--blue); color: white; }
+
+.cards { display: grid; gap: 13px; }
+    .card, .profile-card, .request-card, .chat-box {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 19px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+.person { display: flex; align-items: center; gap: 12px; }
+    .avatar {
+      display: grid;
+      width: 52px;
+      height: 52px;
+      flex: 0 0 52px;
+      place-items: center;
+      border-radius: 17px;
+      font-size: 27px;
+    }
+    .person-info { min-width: 0; flex: 1; }
+    .person-info h2 { margin: 0 0 4px; font-size: 16px; }
+    .person-info p { margin: 0; color: var(--muted); font-size: 12px; }
+
+.shared { margin: 14px 0 8px; color: var(--blue-dark); font-size: 12px; font-weight: 700; }
+    .bio { margin: 0 0 12px; color: #596672; font-size: 13px; line-height: 1.5; }
+    .label {
+      margin: 12px 0 7px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 750;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip { padding: 6px 9px; border-radius: 999px; background: var(--chip); color: #2b7699; font-size: 11px; }
+
+.card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 15px;
+      padding-top: 13px;
+      border-top: 1px solid var(--border);
+    }
+
+.button, .connect, .edit-button, .save-button {
+      border: 0;
+      border-radius: 11px;
+      background: var(--blue);
+      color: white;
+      font-weight: 700;
+    }
+    .button, .connect { padding: 9px 13px; font-size: 12px; }
+    .button.secondary, .connect.sent, .connect.friend {
+      background: #eaf6fc;
+      color: var(--blue-dark);
+    }
+    .button.danger { background: #fff0ef; color: #c64b43; }
+    .button-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 13px; }
+    .muted { color: var(--muted); font-size: 12px; }
+
+.empty {
+      padding: 36px 18px;
+      border: 1px dashed #d5e0e7;
+      border-radius: 18px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+    .empty strong { display: block; margin-bottom: 5px; color: var(--text); }
+
+.profile-head { display: flex; align-items: center; gap: 14px; margin-bottom: 17px; }
+    .profile-head .avatar { width: 64px; height: 64px; flex-basis: 64px; }
+    .profile-head h2 { margin: 0 0 4px; font-size: 20px; }
+    .profile-head p { margin: 0; color: var(--muted); font-size: 12px; }
+    .profile-bio { color: #596672; font-size: 14px; line-height: 1.6; }
+    .edit-button, .save-button { width: 100%; margin-top: 18px; padding: 12px; }
+    .form { display: grid; gap: 12px; margin-top: 17px; }
+    .form label { display: grid; gap: 6px; color: #56636f; font-size: 12px; font-weight: 650; }
+    textarea.field { min-height: 74px; resize: vertical; }
+    .form-hint { color: var(--muted); font-size: 11px; font-weight: 400; }
+    [hidden] { display: none !important; }
+
+.chat-box { padding: 0; overflow: hidden; }
+    .chat-head { display: flex; align-items: center; gap: 10px; padding: 13px; border-bottom: 1px solid var(--border); }
+    .chat-head .avatar { width: 42px; height: 42px; flex-basis: 42px; font-size: 22px; }
+    .chat-head strong { font-size: 14px; }
+    .chat-head .back { margin-left: auto; border: 0; background: transparent; color: var(--blue-dark); }
+    .messages { display: grid; gap: 8px; min-height: 190px; max-height: 48vh; overflow-y: auto; padding: 14px; }
+    .message { max-width: 82%; padding: 9px 11px; border-radius: 13px; background: #f0f3f5; font-size: 13px; line-height: 1.45; }
+    .message.mine { justify-self: end; background: #e4f4fc; }
+    .chat-form { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--border); }
+    .chat-form .field { flex: 1; }
+    .chat-form button { padding: 0 14px; border: 0; border-radius: 11px; background: var(--blue); color: white; font-weight: 700; }
+
+.onboarding-wrap { display: grid; min-height: 75vh; align-items: center; padding: 20px 16px; }
+    .onboarding { padding: 22px; border: 1px solid var(--border); border-radius: 23px; background: white; box-shadow: var(--shadow); }
+    .welcome-mark {
+      display: grid; width: 58px; height: 58px; place-items: center;
+      border-radius: 20px; background: var(--blue); color: white; margin-bottom: 18px;
+    }
+    .welcome-mark svg { width: 32px; height: 32px; fill: currentColor; }
+    .onboarding h1 { margin: 0 0 8px; font-size: 25px; }
+    .onboarding > p { margin: 0 0 20px; color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .onboarding .form { margin: 0; }
+    .notice { margin-top: 14px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+
+.bottom-nav {
+      position: fixed;
+      z-index: 6;
+      right: 0; bottom: 0; left: 0;
+      display: flex; justify-content: center;
+      padding: 9px 10px max(9px, env(safe-area-inset-bottom));
+      border-top: 1px solid var(--border);
+      background: rgba(255,255,255,.97);
+      backdrop-filter: blur(14px);
+    }
+    .nav-inner { display: flex; width: min(100%, 520px); gap: 4px; }
+    .nav-button {
+      position: relative;
+      display: grid; flex: 1; justify-items: center; gap: 4px;
+      padding: 7px 3px;
+      border: 0; border-radius: 11px;
+      background: transparent; color: #84909a; font-size: 10px;
+    }
+    .nav-button .icon { font-size: 18px; line-height: 1; }
+    .nav-button.active { background: #edf7fc; color: var(--blue-dark); font-weight: 700; }
+    .badge {
+      position: absolute; top: 1px; left: calc(50% + 7px);
+      min-width: 15px; padding: 2px 4px; border-radius: 99px;
+      background: #e25555; color: white; font-size: 9px;
+    }
+
+.toast {
+      position: fixed; z-index: 10; right: 50%; bottom: 86px;
+      max-width: calc(100% - 32px); padding: 11px 16px;
+      transform: translate(50%, 14px); border-radius: 12px;
+      background: #18212b; color: white; font-size: 13px;
+      opacity: 0; pointer-events: none; transition: 180ms ease;
+    }
+    .toast.show { transform: translate(50%, 0); opacity: 1; }
+
+@media (min-width: 600px) {
+      body { padding: 18px 0; }
+      .app { min-height: calc(100vh - 36px); border: 1px solid #e5ebef; border-radius: 28px; box-shadow: 0 18px 60px rgba(28,51,71,.1); overflow: hidden; }
+      .bottom-nav { right: 50%; bottom: 18px; width: min(100%, 520px); transform: translateX(50%); border-radius: 0 0 28px 28px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header class="topbar" id="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-label="Telegram-inspired logo">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.8 4.2 18.6 20c-.2 1.1-.9 1.4-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.3-8.4c.4-.4-.1-.6-.6-.2L6 13.5l-5-1.6c-1.1-.3-1.1-1.1.2-1.6L20.5 2.7c.9-.3 1.6.2 1.3 1.5Z"/></svg>
+        </div>
+        <div class="brand-name">Common Ground</div>
+      </div>
+      <div class="demo-label">Local prototype</div>
+    </header>
+
+<main id="main"></main>
+
+<nav class="bottom-nav" id="bottom-nav" aria-label="Main navigation" hidden>
+      <div class="nav-inner" id="nav-inner"></div>
+    </nav>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+    const people = [
+      { id:"sofia", name:"Sofia Chen", username:"sofiachen", emoji:"🎨", color:"#fce9df", location:"Istanbul", bio:"Collecting little moments, good films, and places with great coffee.", interests:["Cinema","Photography","Travel","Art"], movies:["Before Sunrise","Amélie"], books:["The Little Prince","Normal People"] },
+      { id:"noah", name:"Noah Williams", username:"noahw", emoji:"🎧", color:"#e5efff", location:"London", bio:"Music lover and weekend bookshop explorer. Always up for a good conversation.", interests:["Music","Reading","Coffee","Cinema"], movies:["Interstellar","Dune"], books:["Norwegian Wood","1984"] },
+      { id:"mina", name:"Mina Park", username:"minapark", emoji:"🌿", color:"#e4f4e8", location:"Seoul", bio:"Slow mornings, long walks, and stories that stay with you.", interests:["Reading","Travel","Nature","Cooking"], movies:["Little Women","Past Lives"], books:["The Alchemist","Pachinko"] },
+      { id:"leo", name:"Leo Costa", username:"leocosta", emoji:"📷", color:"#f2e8ff", location:"Lisbon", bio:"Photographer looking for hidden corners and people to share them with.", interests:["Photography","Travel","Art","Music"], movies:["Her","The Grand Budapest Hotel"], books:["On the Road","Sapiens"] }
+    ];
+
+const KEY = "common-ground-mvp-v2";
+    const defaultState = {
+      profile: null,
+      requests: [{ id:"demo-request", personId:"sofia", direction:"incoming", status:"pending", createdAt:Date.now() }],
+      friends: [],
+      messages: {}
+    };
+
+let state = loadState();
+    let page = "discover";
+    let filter = "All";
+    let query = "";
+    let chatPersonId = null;
+    const main = document.getElementById("main");
+    const nav = document.getElementById("nav-inner");
+    const toast = document.getElementById("toast");
+
+function loadState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(KEY));
+        if (!saved) return structuredClone(defaultState);
+        return { ...structuredClone(defaultState), ...saved };
+      } catch { return structuredClone(defaultState); }
+    }
+    function persist() { localStorage.setItem(KEY, JSON.stringify(state)); }
+    function esc(v="") {
+      return String(v).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    }
+    function list(v) { return String(v || "").split(",").map(x=>x.trim()).filter(Boolean); }
+    function toastMsg(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(toastMsg.timer);
+      toastMsg.timer = setTimeout(()=>toast.classList.remove("show"), 2200);
+    }
+    function personById(id) { return people.find(p=>p.id===id); }
+    function isFriend(id) { return state.friends.includes(id); }
+    function incoming() { return state.requests.filter(r=>r.direction==="incoming" && r.status==="pending"); }
+    function outgoing() { return state.requests.filter(r=>r.direction==="outgoing" && r.status==="pending"); }
+
+function render() {
+      if (!state.profile) { renderOnboarding(); return; }
+      document.getElementById("bottom-nav").hidden = false;
+      renderNav();
+      if (page==="discover") renderDiscover();
+      else if (page==="requests") renderRequests();
+      else if (page==="friends") renderFriends();
+      else if (page==="chat") renderChat();
+      else renderProfile();
+    }
+
+function renderOnboarding() {
+      document.getElementById("bottom-nav").hidden = true;
+      main.innerHTML = `
+        <div class="onboarding-wrap"><section class="onboarding">
+          <div class="welcome-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.8 4.2 18.6 20c-.2 1.1-.9 1.4-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.3-8.4c.4-.4-.1-.6-.6-.2L6 13.5l-5-1.6c-1.1-.3-1.1-1.1.2-1.6L20.5 2.7c.9-.3 1.6.2 1.3 1.5Z"/></svg></div>
+          <h1>Find your people</h1>
+          <p>Meet people through the movies, books, and interests you love.</p>
+          <form class="form" id="signup-form">
+            <label>Display name<input class="field" name="name" maxlength="40" placeholder="Your name" required></label>
+            <label>Username<input class="field" name="username" maxlength="24" placeholder="yourname" required pattern="[A-Za-z0-9_]{3,24}"><span class="form-hint">3–24 characters. Letters, numbers, and underscores.</span></label>
+            <label>Short bio<textarea class="field" name="bio" maxlength="180" placeholder="A little about you"></textarea></label>
+            <label>Interests<input class="field" name="interests" placeholder="Cinema, Reading, Travel"><span class="form-hint">Separate items with commas.</span></label>
+            <label>Favorite movies<input class="field" name="movies" placeholder="Interstellar, Amélie"></label>
+            <label>Favorite books<input class="field" name="books" placeholder="The Alchemist, 1984"></label>
+            <button class="save-button" type="submit">Create my profile</button>
+          </form>
+          <div class="notice">Local demo only. This prototype does not use real Telegram login or send data to other users.</div>
+        </section></div>`;
+
+document.getElementById("signup-form").addEventListener("submit", e=>{
+        e.preventDefault();
+        const d = new FormData(e.currentTarget);
+        state.profile = {
+          name:String(d.get("name")).trim(),
+          username:String(d.get("username")).trim().replace(/^@/,""),
+          bio:String(d.get("bio")).trim(),
+          interests:list(d.get("interests")),
+          movies:list(d.get("movies")),
+          books:list(d.get("books"))
+        };
+        persist(); page="discover"; render(); toastMsg("Welcome to Common Ground!");
+      });
+    }
+
+function renderNav() {
+      const items = [
+        ["discover","⌕","Discover",0],
+        ["requests","↗","Requests",incoming().length],
+        ["friends","♡","Friends",state.friends.length],
+        ["profile","◉","Profile",0]
+      ];
+      nav.innerHTML = items.map(([id,icon,label,count])=>`
+        <button class="nav-button ${page===id || (page==="chat"&&id==="friends")?"active":""}" data-page="${id}">
+          <span class="icon">${icon}</span><span>${label}</span>${count?`<span class="badge">${count}</span>`:""}
+        </button>`).join("");
+      nav.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>{
+        page=b.dataset.page; chatPersonId=null; render();
+      }));
+    }
+
+function shared(p) {
+      const mine = new Set((state.profile.interests||[]).map(x=>x.toLowerCase()));
+      return p.interests.filter(x=>mine.has(x.toLowerCase()));
+    }
+
+function renderDiscover() {
+      const filters=["All","Cinema","Reading","Music","Travel","Art"];
+      const q=query.toLowerCase().trim();
+      const visible=people.filter(p=>{
+        if(isFriend(p.id)) return false;
+        const req=state.requests.find(r=>r.personId===p.id && r.status==="pending");
+        const matchesFilter=filter==="All" || p.interests.some(x=>x.toLowerCase()===filter.toLowerCase());
+        const text=[p.name,p.username,p.location,p.bio,...p.interests,...p.movies,...p.books].join(" ").toLowerCase();
+        return matchesFilter && (!q||text.includes(q));
+      });
+
+main.innerHTML=`
+        <section class="intro"><h1>Find your people</h1><p>Discover people who love the same things you do.</p></section>
+        <div class="search-wrap"><span class="search-icon">⌕</span><input class="search" id="search" placeholder="Search people or interests" value="${esc(query)}" aria-label="Search"></div>
+        <div class="filters">${filters.map(x=>`<button class="filter ${filter===x?"active":""}" data-filter="${esc(x)}">${esc(x)}</button>`).join("")}</div>
+        <section class="cards">${visible.length?visible.map(cardHTML).join(""):`<div class="empty"><strong>No profiles found</strong>Try a different search or interest.</div>`}</section>`;
+
+const search=document.getElementById("search");
+      search.addEventListener("input",e=>{query=e.target.value; const pos=e.target.selectionStart; renderDiscover(); const s=document.getElementById("search"); s.focus(); s.setSelectionRange(pos,pos);});
+      main.querySelectorAll("[data-filter]").forEach(b=>b.addEventListener("click",()=>{filter=b.dataset.filter;renderDiscover();}));
+      main.querySelectorAll("[data-connect]").forEach(b=>b.addEventListener("click",()=>sendRequest(b.dataset.connect)));
+    }
+
+function cardHTML(p) {
+      const common=shared(p);
+      const req=state.requests.find(r=>r.personId===p.id && r.direction==="outgoing" && r.status==="pending");
+      return `<article class="card">
+        <div class="person"><div class="avatar" style="background:${p.color}">${p.emoji}</div><div class="person-info"><h2>${esc(p.name)}</h2><p>@${esc(p.username)} · ${esc(p.location)}</p></div></div>
+        <div class="shared">${common.length?`${common.length} shared interest${common.length===1?"":"s"} with you`:"A chance to discover something new"}</div>
+        <p class="bio">${esc(p.bio)}</p>
+        <div class="label">Interests</div><div class="chips">${p.interests.map(x=>`<span class="chip">${esc(x)}</span>`).join("")}</div>
+        <div class="label">Favorite movies</div><div class="chips">${p.movies.map(x=>`<span class="chip">${esc(x)}</span>`).join("")}</div>
+        <div class="label">Favorite books</div><div class="chips">${p.books.map(x=>`<span class="chip">${esc(x)}</span>`).join("")}</div>
+        <div class="card-actions"><span class="muted">${req?"Request pending":"Say hello and connect."}</span><button class="connect ${req?"sent":""}" data-connect="${p.id}" ${req?"disabled":""}>${req?"Request sent":"Connect"}</button></div>
+      </article>`;
+    }
+
+function sendRequest(id) {
+      if(state.requests.some(r=>r.personId===id && r.direction==="outgoing" && r.status==="pending")) return;
+      state.requests.push({id:"r-"+Date.now(),personId:id,direction:"outgoing",status:"pending",createdAt:Date.now()});
+      persist(); render(); toastMsg(`Request sent to ${personById(id).name}`);
+    }
+
+function renderRequests() {
+      const ins=incoming(), outs=outgoing();
+      main.innerHTML=`<section class="intro"><h1>Requests</h1><p>Accept a request to add someone to your Friends.</p></section>
+        <div class="label">Incoming · ${ins.length}</div>
+        <section class="cards">${ins.length?ins.map(r=>requestHTML(r,true)).join(""):`<div class="empty"><strong>No new requests</strong>When someone wants to connect, their request will appear here.</div>`}</section>
+        <div class="label" style="margin-top:20px">Sent · ${outs.length}</div>
+        <section class="cards">${outs.length?outs.map(r=>requestHTML(r,false)).join(""):`<div class="empty"><strong>No sent requests</strong>Requests you send will appear here.</div>`}</section>`;
+
+main.querySelectorAll("[data-action]").forEach(b=>b.addEventListener("click",()=>handleRequest(b.dataset.action,b.dataset.id)));
+    }
+
+function requestHTML(r,isIncoming) {
+      const p=personById(r.personId);
+      return `<article class="request-card"><div class="person"><div class="avatar" style="background:${p.color}">${p.emoji}</div><div class="person-info"><h2>${esc(p.name)}</h2><p>@${esc(p.username)} · ${shared(p).length} shared interests</p></div></div>
+      <p class="bio" style="margin-top:12px">${esc(p.bio)}</p><div class="button-row">
+      ${isIncoming?`<button class="button" data-action="accept" data-id="${p.id}">Accept</button><button class="button danger" data-action="decline" data-id="${p.id}">Decline</button>`:`<button class="button secondary" disabled>Request sent</button><button class="button danger" data-action="cancel" data-id="${p.id}">Cancel</button>`}
+      </div></article>`;
+    }
+
+function handleRequest(action,id) {
+      if(action==="accept") {
+        state.requests=state.requests.filter(r=>!(r.personId===id && r.direction==="incoming" && r.status==="pending"));
+        if(!isFriend(id)) state.friends.push(id);
+        persist(); render(); toastMsg(`${personById(id).name} is now your friend`);
+      } else {
+        state.requests=state.requests.filter(r=>!(r.personId===id && r.status==="pending"));
+        persist(); render(); toastMsg(action==="decline"?"Request declined":"Request cancelled");
+      }
+    }
+
+function renderFriends() {
+      const q=query.toLowerCase().trim();
+      const friends=state.friends.map(personById).filter(p=>p&&(!q||[p.name,p.username,...p.interests].join(" ").toLowerCase().includes(q)));
+      main.innerHTML=`<section class="intro"><h1>Friends</h1><p>Your connections, built around what you love.</p></section>
+        <div class="search-wrap"><span class="search-icon">⌕</span><input class="search" id="friend-search" placeholder="Search friends" value="${esc(query)}"></div>
+        <section class="cards">${friends.length?friends.map(p=>`<article class="card"><div class="person"><div class="avatar" style="background:${p.color}">${p.emoji}</div><div class="person-info"><h2>${esc(p.name)}</h2><p>@${esc(p.username)} · ${esc(p.location)}</p></div></div><p class="bio" style="margin-top:12px">${esc(p.bio)}</p><div class="button-row"><button class="button" data-chat="${p.id}">Message</button><button class="button danger" data-remove="${p.id}">Remove friend</button></div></article>`).join(""):`<div class="empty"><strong>No friends yet</strong>Accept an incoming request or send one from Discover.</div>`}</section>`;
+        document.getElementById("friend-search").addEventListener("input",e=>{query=e.target.value;renderFriends();document.getElementById("friend-search").focus();});
+        main.querySelectorAll("[data-chat]").forEach(b=>b.addEventListener("click",()=>{chatPersonId=b.dataset.chat;page="chat";render();}));
+        main.querySelectorAll("[data-remove]").forEach(b=>b.addEventListener("click",()=>{state.friends=state.friends.filter(x=>x!==b.dataset.remove);persist();render();toastMsg("Friend removed");}));
+    }
+
+function renderChat() {
+      const p=personById(chatPersonId);
+      if(!p||!isFriend(p.id)){page="friends";render();return;}
+      const msgs=state.messages[p.id]||[];
+      main.innerHTML=`<section class="intro"><h1>Messages</h1><p>Local demo chat · messages are saved on this device only.</p></section>
+        <section class="chat-box"><div class="chat-head"><div class="avatar" style="background:${p.color}">${p.emoji}</div><strong>${esc(p.name)}</strong><button class="back" id="back-friends">Back</button></div>
+        <div class="messages">${msgs.length?msgs.map(m=>`<div class="message ${m.mine?"mine":""}">${esc(m.text)}</div>`).join(""):`<div class="empty">Say hello to ${esc(p.name)}.</div>`}</div>
+        <form class="chat-form" id="chat-form"><input class="field" name="message" maxlength="500" placeholder="Write a message…" required><button>Send</button></form></section>`;
+      document.getElementById("back-friends").addEventListener("click",()=>{page="friends";render();});
+      document.getElementById("chat-form").addEventListener("submit",e=>{
+        e.preventDefault(); const input=e.currentTarget.elements.message; const text=input.value.trim(); if(!text)return;
+        (state.messages[p.id] ||= []).push({text,mine:true,at:Date.now()}); persist(); renderChat(); toastMsg("Message saved locally");
+      });
+    }
+
+function renderProfile() {
+      const p=state.profile;
+      main.innerHTML=`<section class="intro"><h1>My profile</h1><p>Your profile helps people find common ground with you.</p></section>
+        <section class="profile-card"><div class="profile-head"><div class="avatar" style="background:#e4f4e8">🙂</div><div><h2>${esc(p.name)}</h2><p>@${esc(p.username)}</p></div></div>
+        <p class="profile-bio">${esc(p.bio||"Add a short bio to introduce yourself.")}</p>
+        ${profileSection("Interests",p.interests)}${profileSection("Favorite movies",p.movies)}${profileSection("Favorite books",p.books)}
+        <button class="edit-button" id="edit-profile">Edit profile</button>
+        <form class="form" id="profile-form" hidden>
+          <label>Display name<input class="field" name="name" maxlength="40" required value="${esc(p.name)}"></label>
+          <label>Username<input class="field" name="username" maxlength="24" required pattern="[A-Za-z0-9_]{3,24}" value="${esc(p.username)}"></label>
+          <label>Short bio<textarea class="field" name="bio" maxlength="180">${esc(p.bio)}</textarea></label>
+          <label>Interests<input class="field" name="interests" value="${esc(p.interests.join(", "))}"></label>
+          <label>Favorite movies<input class="field" name="movies" value="${esc(p.movies.join(", "))}"></label>
+          <label>Favorite books<input class="field" name="books" value="${esc(p.books.join(", "))}"></label>
+          <button class="save-button">Save profile</button>
+        </form>
+        <button class="button danger" id="sign-out" style="width:100%;margin-top:12px;padding:11px">Sign out / Reset demo</button>
+        <div class="notice">This is a local prototype. Real Telegram login, cross-user requests, and delivery need a backend.</div>
+        </section>`;
+      const form=document.getElementById("profile-form");
+      document.getElementById("edit-profile").addEventListener("click",()=>form.hidden=!form.hidden);
+      form.addEventListener("submit",e=>{
+        e.preventDefault(); const d=new FormData(form);
+        state.profile={name:String(d.get("name")).trim(),username:String(d.get("username")).trim().replace(/^@/,""),bio:String(d.get("bio")).trim(),interests:list(d.get("interests")),movies:list(d.get("movies")),books:list(d.get("books"))};
+        persist(); render(); toastMsg("Profile updated");
+      });
+      document.getElementById("sign-out").addEventListener("click",()=>{
+        if(confirm("Reset this local demo and return to sign in?")){localStorage.removeItem(KEY);state=structuredClone(defaultState);page="discover";render();}
+      });
+    }
+
+function profileSection(title,items) {
+      return `<div class="label">${title}</div><div class="chips">${items.length?items.map(x=>`<span class="chip">${esc(x)}</span>`).join(""):`<span class="muted">Nothing added yet.</span>`}</div>`;
+    }
+
+render();
+  </script>
+</body>
+</html>
